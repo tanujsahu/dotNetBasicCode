@@ -1,0 +1,588 @@
+namespace :-
+---------------------------------------
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.IO;
+---------------------------------------------------
+
+global variable:- 
+----------------------
+SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString);
+SqlCommand cmd =new SqlCommand ();  
+
+-------------
+insert Data:-
+---------------------------------------------------
+ protected void reg_btn(object sender, EventArgs e)
+    {
+ cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "insert into contact_query(name,phn,email,msg,addr,dt) values('" + TextBox1.Text + "','" + TextBox2.Text + "','" + TextBox3.Text + "','" + TextBox4.Text + "','" + TextBox5.Text + "','" + dt + "')";
+        cmd.ExecuteNonQuery();
+        con.Close();
+}
+
+-------------
+Select Login :- 
+----------------------------------------------------
+ protected void login_btn(object sender, EventArgs e)
+    {
+ try
+        {
+            Session["uid"] = TextBox1.Text;
+            SqlCommand cmd = new SqlCommand("select *from reg where email='" + TextBox1.Text + "' and pass='" + TextBox2.Text + "'", con);
+            cmd.Connection = con;
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            if (dr.HasRows)
+            {
+                if (dr.Read())
+                {
+                    Response.Redirect("home.aspx");
+                }
+                dr.Close();
+            }
+            Label1.Text = "Invalid UserId And Password";
+            TextBox1.Text = "";
+            TextBox2.Text = "";
+        }
+        catch (Exception er) {
+            Label1.Text="InCorrect Syntax User Id And Password ";
+        }
+}
+
+
+-------------
+Fileupload :-
+-----------------------------------------------------------------------
+ public void imgupload()
+    {
+        if (FileUpload1.HasFile)
+        {
+            string ext = Path.GetExtension(FileUpload1.FileName);
+            string path = Server.MapPath("userImg//");
+            string filename = FileUpload1.FileName;
+            FileUpload1.SaveAs(path + filename);
+        }
+else{
+Label1.Text="Please choose any file";
+
+}
+    }
+
+-------------
+Update :- 
+-----------------------------------------------------------------------
+ protected void edit_btn(object sender, EventArgs e)
+    { 
+cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "update Client set name='" + TextBox1.Text + "',email='" + TextBox2.Text + "',phn='" + TextBox3.Text + "',addr='" + TextBox4.Text + "',img='" + imgName + "',acNo='" + TextBox5.Text + "',ifsc='" + TextBox6.Text + "',branch='" + TextBox7.Text + "',upi='" + TextBox8.Text + "' where email='" + Session["email"] + "'";
+        cmd.ExecuteNonQuery();
+        con.Close();
+}
+
+-------------
+Web Config :-
+-------------------------------------------------=-----------------
+
+<connectionStrings>
+		<remove name="LocalSqlServer"/>
+		<add name="LocalSqlServer" connectionString="Data Source=.;Initial Catalog=DBNAME;Integrated Security=True"
+            providerName="System.Data.SqlClient" />
+	</connectionStrings>
+	<system.web>
+		<sessionState timeout="10"></sessionState>
+		<compilation debug="false" targetFramework="4.0" />
+	</system.web>
+
+
+
+---------------------------------------
+Repeater Code get all data :-
+-----------------------------------------------------------------------
+ SqlDataAdapter sda = new SqlDataAdapter("select *from addcart, con);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            //Repeater1.DataSource = dt;
+            //Repeater1.DataBind();
+
+-----------------------------------------
+Edit Data via querstring:-
+------------------------------------------------------------
+ string id = Request.QueryString["id"].ToString();
+       /// string dt = DateTime.Today.ToString("dd/MM/yyyy ");
+        cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "update reg set name='" + TextBox1.Text + "',p_price='" + TextBox2.Text + "',sale_price='" + TextBox3.Text + "',p_unit='" + TextBox4.Text + "',content='" + TextBox5.Text + "',img='" + imgPath + "',dt='" + dt + "',category='"+DropDownList1.Text+"' where id='" + id + "'";
+        cmd.ExecuteNonQuery();
+        con.Close();
+        imgupload();
+
+--------------------------------------------
+Page load when we edit any data(for save the data or page are not loaded )
+-----------------------------------------------------------------------------------------
+ if (!IsPostBack) {
+                
+         }
+
+-----------show data according to querystring ---- Data fill hokr aane lga
+
+
+----------------------
+Delete Data according to querystring id
+---------------------------------------------------
+ string id = Request.QueryString["id"].ToString();
+        cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "delete from contact_query  where id='" + id + "'";
+        cmd.ExecuteNonQuery();
+        con.Close();
+        Response.Redirect("contactQuery.aspx");
+
+
+
+
+
+
+namespace :-
+---------------------------------------
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.IO;
+---------------------------------------------------
+
+global variable:- 
+----------------------
+SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString);
+SqlCommand cmd =new SqlCommand ();  
+
+-------------
+insert Data:-
+---------------------------------------------------
+ protected void reg_btn(object sender, EventArgs e)
+    {
+ cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "insert into contact_query(name,phn,email,msg,addr,dt) values('" + TextBox1.Text + "','" + TextBox2.Text + "','" + TextBox3.Text + "','" + TextBox4.Text + "','" + TextBox5.Text + "','" + dt + "')";
+        cmd.ExecuteNonQuery();
+        con.Close();
+}
+
+-------------
+Select Login :- 
+----------------------------------------------------
+ protected void login_btn(object sender, EventArgs e)
+    {
+ try
+        {
+            Session["uid"] = TextBox1.Text;
+            SqlCommand cmd = new SqlCommand("select *from reg where email='" + TextBox1.Text + "' and pass='" + TextBox2.Text + "'", con);
+            cmd.Connection = con;
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            if (dr.HasRows)
+            {
+                if (dr.Read())
+                {
+                    Response.Redirect("home.aspx");
+                }
+                dr.Close();
+            }
+            Label1.Text = "Invalid UserId And Password";
+            TextBox1.Text = "";
+            TextBox2.Text = "";
+        }
+        catch (Exception er) {
+            Label1.Text="InCorrect Syntax User Id And Password ";
+        }
+}
+
+
+-------------
+Fileupload :-
+-----------------------------------------------------------------------
+ public void imgupload()
+    {
+        if (FileUpload1.HasFile)
+        {
+            string ext = Path.GetExtension(FileUpload1.FileName);
+            string path = Server.MapPath("userImg//");
+            string filename = FileUpload1.FileName;
+            FileUpload1.SaveAs(path + filename);
+        }
+else{
+Label1.Text="Please choose any file";
+
+}
+    }
+
+-------------
+Update :- 
+-----------------------------------------------------------------------
+ protected void edit_btn(object sender, EventArgs e)
+    { 
+cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "update Client set name='" + TextBox1.Text + "',email='" + TextBox2.Text + "',phn='" + TextBox3.Text + "',addr='" + TextBox4.Text + "',img='" + imgName + "',acNo='" + TextBox5.Text + "',ifsc='" + TextBox6.Text + "',branch='" + TextBox7.Text + "',upi='" + TextBox8.Text + "' where email='" + Session["email"] + "'";
+        cmd.ExecuteNonQuery();
+        con.Close();
+}
+
+-------------
+Web Config :-
+-------------------------------------------------=-----------------
+
+<connectionStrings>
+		<remove name="LocalSqlServer"/>
+		<add name="LocalSqlServer" connectionString="Data Source=.;Initial Catalog=DBNAME;Integrated Security=True"
+            providerName="System.Data.SqlClient" />
+	</connectionStrings>
+	<system.web>
+		<sessionState timeout="10"></sessionState>
+		<compilation debug="false" targetFramework="4.0" />
+	</system.web>
+
+
+
+---------------------------------------
+Repeater Code get all data :-
+-----------------------------------------------------------------------
+ SqlDataAdapter sda = new SqlDataAdapter("select *from addcart, con);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            //Repeater1.DataSource = dt;
+            //Repeater1.DataBind();
+
+-----------------------------------------
+Edit Data via querstring:-
+------------------------------------------------------------
+ string id = Request.QueryString["id"].ToString();
+       /// string dt = DateTime.Today.ToString("dd/MM/yyyy ");
+        cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "update reg set name='" + TextBox1.Text + "',p_price='" + TextBox2.Text + "',sale_price='" + TextBox3.Text + "',p_unit='" + TextBox4.Text + "',content='" + TextBox5.Text + "',img='" + imgPath + "',dt='" + dt + "',category='"+DropDownList1.Text+"' where id='" + id + "'";
+        cmd.ExecuteNonQuery();
+        con.Close();
+        imgupload();
+
+--------------------------------------------
+Page load when we edit any data(for save the data or page are not loaded )
+-----------------------------------------------------------------------------------------
+ if (!IsPostBack) {
+                
+         }
+
+-----------show data according to querystring ---- Data fill hokr aane lga
+
+
+----------------------
+Delete Data according to querystring id
+---------------------------------------------------
+ string id = Request.QueryString["id"].ToString();
+        cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "delete from contact_query  where id='" + id + "'";
+        cmd.ExecuteNonQuery();
+        con.Close();
+        Response.Redirect("contactQuery.aspx");
+
+
+
+
+
+
+
+namespace :-
+---------------------------------------
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.IO;
+---------------------------------------------------
+
+global variable:- 
+----------------------
+SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString);
+SqlCommand cmd =new SqlCommand ();  
+
+-------------
+insert Data:-
+---------------------------------------------------
+ protected void reg_btn(object sender, EventArgs e)
+    {
+ cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "insert into contact_query(name,phn,email,msg,addr,dt) values('" + TextBox1.Text + "','" + TextBox2.Text + "','" + TextBox3.Text + "','" + TextBox4.Text + "','" + TextBox5.Text + "','" + dt + "')";
+        cmd.ExecuteNonQuery();
+        con.Close();
+}
+
+-------------
+Select Login :- 
+----------------------------------------------------
+ protected void login_btn(object sender, EventArgs e)
+    {
+ try
+        {
+            Session["uid"] = TextBox1.Text;
+            SqlCommand cmd = new SqlCommand("select *from reg where email='" + TextBox1.Text + "' and pass='" + TextBox2.Text + "'", con);
+            cmd.Connection = con;
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            if (dr.HasRows)
+            {
+                if (dr.Read())
+                {
+                    Response.Redirect("home.aspx");
+                }
+                dr.Close();
+            }
+            Label1.Text = "Invalid UserId And Password";
+            TextBox1.Text = "";
+            TextBox2.Text = "";
+        }
+        catch (Exception er) {
+            Label1.Text="InCorrect Syntax User Id And Password ";
+        }
+}
+
+
+-------------
+Fileupload :-
+-----------------------------------------------------------------------
+ public void imgupload()
+    {
+        if (FileUpload1.HasFile)
+        {
+            string ext = Path.GetExtension(FileUpload1.FileName);
+            string path = Server.MapPath("userImg//");
+            string filename = FileUpload1.FileName;
+            FileUpload1.SaveAs(path + filename);
+        }
+else{
+Label1.Text="Please choose any file";
+
+}
+    }
+
+-------------
+Update :- 
+-----------------------------------------------------------------------
+ protected void edit_btn(object sender, EventArgs e)
+    { 
+cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "update Client set name='" + TextBox1.Text + "',email='" + TextBox2.Text + "',phn='" + TextBox3.Text + "',addr='" + TextBox4.Text + "',img='" + imgName + "',acNo='" + TextBox5.Text + "',ifsc='" + TextBox6.Text + "',branch='" + TextBox7.Text + "',upi='" + TextBox8.Text + "' where email='" + Session["email"] + "'";
+        cmd.ExecuteNonQuery();
+        con.Close();
+}
+
+-------------
+Web Config :-
+-------------------------------------------------=-----------------
+
+<connectionStrings>
+		<remove name="LocalSqlServer"/>
+		<add name="LocalSqlServer" connectionString="Data Source=.;Initial Catalog=DBNAME;Integrated Security=True"
+            providerName="System.Data.SqlClient" />
+	</connectionStrings>
+	<system.web>
+		<sessionState timeout="10"></sessionState>
+		<compilation debug="false" targetFramework="4.0" />
+	</system.web>
+
+
+
+---------------------------------------
+Repeater Code get all data :-
+-----------------------------------------------------------------------
+ SqlDataAdapter sda = new SqlDataAdapter("select *from addcart, con);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            //Repeater1.DataSource = dt;
+            //Repeater1.DataBind();
+
+-----------------------------------------
+Edit Data via querstring:-
+------------------------------------------------------------
+ string id = Request.QueryString["id"].ToString();
+       /// string dt = DateTime.Today.ToString("dd/MM/yyyy ");
+        cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "update reg set name='" + TextBox1.Text + "',p_price='" + TextBox2.Text + "',sale_price='" + TextBox3.Text + "',p_unit='" + TextBox4.Text + "',content='" + TextBox5.Text + "',img='" + imgPath + "',dt='" + dt + "',category='"+DropDownList1.Text+"' where id='" + id + "'";
+        cmd.ExecuteNonQuery();
+        con.Close();
+        imgupload();
+
+--------------------------------------------
+Page load when we edit any data(for save the data or page are not loaded )
+-----------------------------------------------------------------------------------------
+ if (!IsPostBack) {
+                
+         }
+
+-----------show data according to querystring ---- Data fill hokr aane lga
+
+
+----------------------
+Delete Data according to querystring id
+---------------------------------------------------
+ string id = Request.QueryString["id"].ToString();
+        cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "delete from contact_query  where id='" + id + "'";
+        cmd.ExecuteNonQuery();
+        con.Close();
+        Response.Redirect("contactQuery.aspx");
+
+
+
+
+
+
+
+namespace :-
+---------------------------------------
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.IO;
+---------------------------------------------------
+
+global variable:- 
+----------------------
+SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["LocalSqlServer"].ConnectionString);
+SqlCommand cmd =new SqlCommand ();  
+
+-------------
+insert Data:-
+---------------------------------------------------
+ protected void reg_btn(object sender, EventArgs e)
+    {
+ cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "insert into contact_query(name,phn,email,msg,addr,dt) values('" + TextBox1.Text + "','" + TextBox2.Text + "','" + TextBox3.Text + "','" + TextBox4.Text + "','" + TextBox5.Text + "','" + dt + "')";
+        cmd.ExecuteNonQuery();
+        con.Close();
+}
+
+-------------
+Select Login :- 
+----------------------------------------------------
+ protected void login_btn(object sender, EventArgs e)
+    {
+ try
+        {
+            Session["uid"] = TextBox1.Text;
+            SqlCommand cmd = new SqlCommand("select *from reg where email='" + TextBox1.Text + "' and pass='" + TextBox2.Text + "'", con);
+            cmd.Connection = con;
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            if (dr.HasRows)
+            {
+                if (dr.Read())
+                {
+                    Response.Redirect("home.aspx");
+                }
+                dr.Close();
+            }
+            Label1.Text = "Invalid UserId And Password";
+            TextBox1.Text = "";
+            TextBox2.Text = "";
+        }
+        catch (Exception er) {
+            Label1.Text="InCorrect Syntax User Id And Password ";
+        }
+}
+
+
+-------------
+Fileupload :-
+-----------------------------------------------------------------------
+ public void imgupload()
+    {
+        if (FileUpload1.HasFile)
+        {
+            string ext = Path.GetExtension(FileUpload1.FileName);
+            string path = Server.MapPath("userImg//");
+            string filename = FileUpload1.FileName;
+            FileUpload1.SaveAs(path + filename);
+        }
+else{
+Label1.Text="Please choose any file";
+
+}
+    }
+
+-------------
+Update :- 
+-----------------------------------------------------------------------
+ protected void edit_btn(object sender, EventArgs e)
+    { 
+cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "update Client set name='" + TextBox1.Text + "',email='" + TextBox2.Text + "',phn='" + TextBox3.Text + "',addr='" + TextBox4.Text + "',img='" + imgName + "',acNo='" + TextBox5.Text + "',ifsc='" + TextBox6.Text + "',branch='" + TextBox7.Text + "',upi='" + TextBox8.Text + "' where email='" + Session["email"] + "'";
+        cmd.ExecuteNonQuery();
+        con.Close();
+}
+
+-------------
+Web Config :-
+-------------------------------------------------=-----------------
+
+<connectionStrings>
+		<remove name="LocalSqlServer"/>
+		<add name="LocalSqlServer" connectionString="Data Source=.;Initial Catalog=DBNAME;Integrated Security=True"
+            providerName="System.Data.SqlClient" />
+	</connectionStrings>
+	<system.web>
+		<sessionState timeout="10"></sessionState>
+		<compilation debug="false" targetFramework="4.0" />
+	</system.web>
+
+
+
+---------------------------------------
+Repeater Code get all data :-
+-----------------------------------------------------------------------
+ SqlDataAdapter sda = new SqlDataAdapter("select *from addcart, con);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            //Repeater1.DataSource = dt;
+            //Repeater1.DataBind();
+
+-----------------------------------------
+Edit Data via querstring:-
+------------------------------------------------------------
+ string id = Request.QueryString["id"].ToString();
+       /// string dt = DateTime.Today.ToString("dd/MM/yyyy ");
+        cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "update reg set name='" + TextBox1.Text + "',p_price='" + TextBox2.Text + "',sale_price='" + TextBox3.Text + "',p_unit='" + TextBox4.Text + "',content='" + TextBox5.Text + "',img='" + imgPath + "',dt='" + dt + "',category='"+DropDownList1.Text+"' where id='" + id + "'";
+        cmd.ExecuteNonQuery();
+        con.Close();
+        imgupload();
+
+--------------------------------------------
+Page load when we edit any data(for save the data or page are not loaded )
+-----------------------------------------------------------------------------------------
+ if (!IsPostBack) {
+                
+         }
+
+-----------show data according to querystring ---- Data fill hokr aane lga
+
+
+----------------------
+Delete Data according to querystring id
+---------------------------------------------------
+ string id = Request.QueryString["id"].ToString();
+        cmd.Connection = con;
+        con.Open();
+        cmd.CommandText = "delete from contact_query  where id='" + id + "'";
+        cmd.ExecuteNonQuery();
+        con.Close();
+        Response.Redirect("contactQuery.aspx");
